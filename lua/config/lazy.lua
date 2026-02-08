@@ -16,33 +16,81 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
+    -- LazyVim core plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import/override with your plugins
+
+    -- Your custom plugins folder
     { import = "plugins" },
+
+    -- Neo-tree file explorer
+    {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v3.x",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons",
+        "MunifTanjim/nui.nvim",
+      },
+      config = function()
+        require("neo-tree").setup({
+          close_if_last_window = true,
+          enable_git_status = true,
+          enable_diagnostics = true,
+          filesystem = {
+            filtered_items = {
+              visible = true, -- show hidden files
+              hide_dotfiles = false, -- show dotfiles like .env
+              hide_gitignored = false,
+            },
+          },
+          default_component_configs = {
+            icon = {
+              folder_closed = "",
+              folder_open = "",
+              folder_empty = "ﰊ",
+            },
+            git_status = {
+              symbols = {
+                added = "+",
+                modified = "~",
+                deleted = "-",
+                renamed = "→",
+                untracked = "?",
+              },
+            },
+          },
+          window = {
+            position = "left",
+            width = 30,
+            mapping_options = { noremap = true, nowait = true },
+            mappings = {
+              ["<CR>"] = "open",
+              ["l"] = "open",
+              ["h"] = "close_node",
+              ["v"] = "open_vsplit",
+              ["s"] = "open_split",
+            },
+          },
+        })
+
+        -- Optional keymap to toggle Neo-tree
+        vim.api.nvim_set_keymap("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true })
+      end,
+    },
   },
   defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
-    -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
     lazy = false,
-    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-    -- have outdated releases, which may break your Neovim install.
-    version = false, -- always use the latest git commit
-    -- version = "*", -- try installing the latest stable version for plugins that support semver
+    version = false,
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
   checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  }, -- automatically check for plugin updates
+    enabled = true,
+    notify = false,
+  },
   performance = {
     rtp = {
-      -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",
