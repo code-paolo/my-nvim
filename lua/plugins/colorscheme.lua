@@ -1,48 +1,39 @@
 return {
   {
-    "craftzdog/solarized-osaka.nvim",
+    "olimorris/onedarkpro.nvim",
     lazy = false,
     priority = 1000,
     opts = {
-      transparent = false,
-      terminal_colors = true,
+      theme = "onedark", -- One Dark Pro (default VS Code look)
+
+      options = {
+        transparency = false,
+        terminal_colors = true,
+        highlight_inactive_windows = false,
+      },
+
       styles = {
-        comments = { italic = true },
-        keywords = { italic = true },
-        functions = { bold = true },
-        variables = {},
-        sidebars = "dark",
-        floats = "dark",
+        comments = "italic",
+        keywords = "italic",
+        functions = "bold",
+        variables = "NONE",
       },
-      sidebars = {
-        "qf",
-        "help",
-        "vista_kind",
-        "terminal",
-        "packer",
-        "neo-tree",
-        "Trouble",
-        "lazy",
-        "mason",
+
+      highlights = {
+        -- Make floats & popups match main background
+        NormalFloat = { link = "Normal" },
+        FloatBorder = { link = "Normal" },
+        TelescopeBorder = { link = "Normal" },
+        TelescopeNormal = { link = "Normal" },
+        WhichKeyFloat = { link = "Normal" },
+        LspInfoBorder = { link = "Normal" },
+        MasonNormal = { link = "Normal" },
+        LazyNormal = { link = "Normal" },
       },
-      day_brightness = 0.3,
-      hide_inactive_statusline = false,
-      dim_inactive = false,
-      lualine_bold = true,
     },
     config = function(_, opts)
-      require("solarized-osaka").setup(opts)
-      vim.cmd([[colorscheme solarized-osaka]])
-
-      -- Apply theme to all components
-      vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "WhichKeyFloat", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "MasonNormal", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "LazyNormal", { link = "Normal" })
+      require("onedarkpro").setup(opts)
+      vim.cmd("colorscheme onedark")
     end,
   },
 }
